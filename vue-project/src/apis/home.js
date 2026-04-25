@@ -13,3 +13,10 @@ export const findNewAPI = () => {
     url:'/home/new'
   })
 }
+
+//封装热门推荐
+export const getHotAPI = () => {
+  return  httpInstance({
+    url: '/home/hot'
+  })
+}
