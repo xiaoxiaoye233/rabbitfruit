@@ -20,3 +20,10 @@ export const getHotAPI = () => {
     url: '/home/hot'
   })
 }
+
+//封装商品列表
+export const getGoodsAPI = () => {
+  return httpInstance({
+    url: '/home/goods'
+  })
+}
