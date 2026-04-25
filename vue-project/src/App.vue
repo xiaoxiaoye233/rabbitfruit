@@ -3,11 +3,8 @@
 </script>
 
 <template>
-  <!--一级路由出口-->>
+  <!--一级路由出口-->
   <router-view/>
-  <div class = 'test'>
-    test scss
-  </div>
 </template>
 
 <style scoped lang = 'scss'>
