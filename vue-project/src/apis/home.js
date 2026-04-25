@@ -6,3 +6,10 @@ export function getBannerAPI(){
         url:'/home/banner'
     })
 }
+
+//封装新鲜好物
+export const findNewAPI = () => {
+  return httpInstance({
+    url:'/home/new'
+  })
+}
