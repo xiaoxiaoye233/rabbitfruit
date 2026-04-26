@@ -1,33 +1,10 @@
 <script setup>
-import { getTopCategoryAPI } from '@/apis/category'
-import { getBannerAPI } from '@/apis/home'
-import { ref, onMounted } from 'vue'
+import { useCategory } from '@/views/category/composables/useCategory'
 import GoodsItem from '@/views/home/components/Goodsitem.vue'
-//在组件内获得路由参数
-import { useRoute } from 'vue-router'
+import { useBanner } from '@/views/category/composables/useBanner'
 
-//获取数据
-const categoryData = ref([])
-const route = useRoute()
-const getCategory = async () => {
-    //组件内的路由参数id传入接口
-    const res = await getTopCategoryAPI(route.params.id)
-    categoryData.value = res.data.result
-}
-
-const bannerList = ref([])
-const getBanner = async () => {
-    const res = await getBannerAPI({
-        distributionSite: '2'
-    })
-    console.log(res)
-    bannerList.value = res.data.result
-}
-
-onMounted(() => {
-    getCategory()
-    getBanner()
-})
+const { bannerList } = useBanner()
+const { categoryData } = useCategory()
 </script>
 
 <template>
