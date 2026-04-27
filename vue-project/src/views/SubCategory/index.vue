@@ -1,5 +1,5 @@
 <script setup>
-import { getCategoryFilterAPI,getSubCategoryAPI } from '@/apis/category'
+import { getCategoryFilterAPI, getSubCategoryAPI } from '@/apis/category'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Goodsitem from '@/views/home/components/Goodsitem.vue'
@@ -18,9 +18,9 @@ onMounted(() => {
 const goodList = ref([])
 const reqData = ref({
     categoryId: route.params.id,
-    page:1,
-    pagesize:20,
-    sortField:'publishTime',
+    page: 1,
+    pagesize: 20,
+    sortField: 'publishTime',
 })
 const getGoodList = async () => {
     const res = await getSubCategoryAPI(reqData.value)
@@ -29,7 +29,24 @@ const getGoodList = async () => {
 onMounted(() => {
     getGoodList()
 })
+const tabChange = () => {
+    console.log('tab切换了', reqData.value.sortField)
+    reqData.value.page = 1
+    getGoodList()
+}
 
+const disabled = ref(false)
+const load = async () => {
+    console.log('加载更多')
+    // 加载更多商品
+    reqData.value.page++
+    const res = await getSubCategoryAPI(reqData.value)
+    goodList.value = [...goodList.value, ...res.data.result.items]
+    //
+    if(res.result.items.length === 0) {
+        disabled.value = true
+    }
+}
 </script>
 
 <template>
@@ -44,14 +61,14 @@ onMounted(() => {
             </el-breadcrumb>
         </div>
         <div class="sub-container">
-            <el-tabs>
+            <el-tabs v-model="reqData.sortField" @tab-change="tabChange">
                 <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
                 <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
                 <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
             </el-tabs>
-            <div class="body">
+            <div class="body" v-infinite-scroll="load" :disabled="disabled">
                 <!-- 商品列表-->
-                 <Goodsitem v-for="item in goodList" :key="item.id" :goods="item" />
+                <Goodsitem v-for="item in goodList" :key="item.id" :goods="item" />
             </div>
         </div>
     </div>
