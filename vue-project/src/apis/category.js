@@ -18,3 +18,12 @@ export const getCategoryFilterAPI = (id) => {
     }
   })
 }
+
+//获取导航分类
+export const getSubCategoryAPI = (data) => {
+  return request({
+    url:'/category/goods/temporary',
+    method:'POST',
+    data
+  })
+}
